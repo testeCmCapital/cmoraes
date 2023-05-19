@@ -20,7 +20,23 @@ app.UseHttpsRedirection();
 
 app.MapGet("/topSellingProducts", () =>
 {
-    return "Top Product 1";
+    return "Produtos mais vendidos";
+});
+
+app.MapGet("/leastSoldProducts", () =>
+{
+    return "Produtos menos vendidos";
+});
+
+
+app.MapGet("/clientPurchasedProducts", () =>
+{
+    return "Produtos comprados por clientes";
+});
+
+app.MapPost("/BuyProduct", () =>
+{
+    return "Produto comprado";
 });
 
 app.Run();
