@@ -1,4 +1,5 @@
-﻿using CmCapitalSalesAvaliacao.Infra.Data;
+﻿using CmCapitalSalesAvaliacao.Domain.Services;
+using CmCapitalSalesAvaliacao.Infra.Data;
 
 namespace CmCapitalSalesAvaliacao.Infra.Configuration
 {
@@ -7,6 +8,7 @@ namespace CmCapitalSalesAvaliacao.Infra.Configuration
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<CmCapitalSalesContext>();
+            services.AddScoped<CmCapitalService>();
         }
     }
 }

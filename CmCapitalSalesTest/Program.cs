@@ -1,3 +1,4 @@
+using CmCapitalSalesAvaliacao.Domain.DTOs;
 using CmCapitalSalesAvaliacao.Infra.Configuration;
 using CmCapitalSalesAvaliacao.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -29,23 +30,28 @@ app.UseHttpsRedirection();
 
 app.MapGet("/topSellingProducts", () =>
 {
-    return "Produtos mais vendidos";
+    return Results.Ok("Produtos mais vendidos");
 });
 
 app.MapGet("/leastSoldProducts", () =>
 {
-    return "Produtos menos vendidos";
+    return Results.Ok("Produtos menos vendidos");
 });
 
 
-app.MapGet("/clientPurchasedProducts", () =>
+app.MapGet("/clientPurchasedProducts", (int CdCliente) =>
 {
-    return "Produtos comprados por clientes";
+    return Results.Ok("Produtos comprados por clientes");
 });
 
-app.MapPost("/buyProduct", () =>
+app.MapPost("/buyProduct", (PedidoDTO PedidoDto) =>
 {
-    return "Produto comprado";
+    return Results.Ok("Produto comprado");
+});
+
+app.MapPut("/cancelPurshase", (int CdPedido) =>
+{
+    return Results.Ok("Produto comprado");
 });
 
 app.Run();

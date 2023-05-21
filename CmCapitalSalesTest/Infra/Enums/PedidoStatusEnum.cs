@@ -1,6 +1,6 @@
 ﻿namespace CmCapitalSalesAvaliacao.Infra.Enums
 {
-    public enum StatusPedido
+    public enum PedidoStatusEnum
     {
         Efetuado = 1,
         Concluido = 2,
