@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Model\" />
+    <Folder Include="Domain\Models\" />
     <Folder Include="Domain\Services\" />
-    <Folder Include="Infra\" />
+    <Folder Include="Infra\Enums\" />
   </ItemGroup>
 
 </Project>

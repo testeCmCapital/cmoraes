@@ -1,7 +1,13 @@
+using CmCapitalSalesAvaliacao.Infra.Configuration;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
+
+
+
+builder.Services.RegisterServices();
 
 var app = builder.Build();
 
