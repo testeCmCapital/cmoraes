@@ -1,5 +1,6 @@
 ﻿using CmCapitalSalesAvaliacao.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CmCapitalSalesAvaliacao.Infra.Data
@@ -11,7 +12,11 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
         {
         }
 
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<PedidoItem> PedidoItens { get; set; }
         public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Taxa> Taxas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
