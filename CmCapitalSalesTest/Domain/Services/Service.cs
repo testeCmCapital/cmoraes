@@ -7,7 +7,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
     {
         public JsonReturn TratarRetornoExcecao(JsonReturn returnData, string message)
         {
-            returnData.IsSucess = false;
+            returnData.IsSuccess = false;
             
             returnData.Messages = new List<Message>
             {

@@ -16,7 +16,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         public JsonReturn ListarProdutos()
         {
-            var returnData = new JsonReturn { IsSucess = true };
+            var returnData = new JsonReturn { IsSuccess = true };
 
             try
             {
@@ -35,7 +35,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         public JsonReturn EfetivarPedido(PedidoDTO PedidoDTO)
         {
-            var returnData = new JsonReturn { IsSucess = true };
+            var returnData = new JsonReturn { IsSuccess = true };
 
             try
             {
@@ -158,7 +158,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         public JsonReturn CancelarPedido(int CdPedido)
         {
-            var returnData = new JsonReturn { IsSucess = true };
+            var returnData = new JsonReturn { IsSuccess = true };
 
             try
             {
@@ -174,9 +174,9 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                     throw new Exception("Pedido não elegivel para cancelamento");
 
                 pedido.CdClienteNavigation.Saldo += pedido.PedidoItem.Sum(c => c.ValorTotal);
-
                 pedido.Status = (int) PedidoStatusEnum.Cancelado;
 
+                _context.Update(pedido);
                 _context.SaveChanges();
 
                 returnData.Data = new { CdPedido };
@@ -198,7 +198,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         public JsonReturn ListarProdutosMaisVendidos()
         {
-            var returnData = new JsonReturn { IsSucess = true };
+            var returnData = new JsonReturn { IsSuccess = true };
 
             try
             {
@@ -222,7 +222,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         public JsonReturn ListarProdutosMenosVendidos()
         {
-            var returnData = new JsonReturn { IsSucess = true };
+            var returnData = new JsonReturn { IsSuccess = true };
 
             try
             {
@@ -244,7 +244,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         public JsonReturn ListarProdutosCompradosPorCliente(int CdCliente)
         {
-            var returnData = new JsonReturn { IsSucess = true };
+            var returnData = new JsonReturn { IsSuccess = true };
 
             try
             {
