@@ -15,6 +15,7 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
 
         public PedidoRetornoDTO (Pedido Pedido)
         {
+            PedidoItensRetornoDTO = new List<PedidoItemRetornoDTO>();
             var pedidoRetornoDto = new PedidoRetornoDTO
             {
                 CdCliente = Pedido.CdCliente,
@@ -28,8 +29,9 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
                 {
                     CdProduto = pedidoItem.CdProduto,
                     NrQuantidade = pedidoItem.NrQuantidade,
-                    ValorTotal = pedidoItem.ValorTotal,
+                    ValorTotal = pedidoItem.ValorTotal * pedidoItem.NrQuantidade,
                 };
+
 
                 PedidoItensRetornoDTO.Add(pedidoItemRetornoDto);
             }

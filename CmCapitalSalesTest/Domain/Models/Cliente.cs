@@ -14,7 +14,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Models
 
         public long CdCliente { get; set; }
         public string Nome { get; set; }
-        public DateTime DtUltimaCompra { get; set; }
+        public DateTime? DtUltimaCompra { get; set; }
         public decimal Saldo { get; set; }
 
         public virtual ICollection<Pedido> Pedido { get; set; }

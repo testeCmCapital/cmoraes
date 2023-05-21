@@ -46,12 +46,18 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
                 var saldoDeCompra = CalcularSaldoCompra(cliente.Saldo);
 
-                var produtosPedido = (
-                    from pr in _context.Produto
-                    join pi in PedidoDTO.PedidoItensDTO on pr.CdProduto equals pi.CdProduto 
-                    select new { pr.CdProduto, pr.ValorUnitario, pr.DtVencimento, pi.NrQuantidade }).ToList();
+                var produtosPedido = _context.Produto.ToList();
 
-                if(cliente.Saldo < produtosPedido.Sum(p => p.ValorUnitario * p.NrQuantidade))
+                var produtoPrecoPedido = (
+                    from pd in produtosPedido
+                    join pi in PedidoDTO.PedidoItensDTO on pd.CdProduto equals pi.CdProduto
+                    select new { pd.CdProduto, pi.NrQuantidade, pd.ValorUnitario, pd.DtVencimento });
+
+                if(!produtoPrecoPedido.Any())
+                    throw new Exception("Produtos não encontrados");
+
+
+                if (cliente.Saldo < produtoPrecoPedido.Sum(p => p.ValorUnitario * p.NrQuantidade))
                 {
                     var produtosElegiveis = (
                         from p in _context.Produto
@@ -73,21 +79,22 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                             ValorLucroAnualAcumulado = new List<ValorLucroDTO>()
                         };
 
-                        var dtInicial = DateTime.Now;
+                        var dtPeriodo = DateTime.Now;
                         
-                        while(produtoElegivel.DtVencimento.Year < dtInicial.Year)
+                        while(produtoElegivel.DtVencimento.Year < dtPeriodo.Year)
                         {
-                            var valorLucroAnual = taxaProduto == null ? (produtoElegivel.ValorUnitario * (decimal)taxaProduto.Percentual) / 100 : 0;
+                            var periodo = dtPeriodo.Year - DateTime.Now.Year;
+                            var valorLucroAnual = taxaProduto == null ? (produtoElegivel.ValorUnitario * (decimal)taxaProduto.Percentual * periodo) / 100 : 0;
 
                             var valorLucroDto = new ValorLucroDTO
                             {
                                 ValorJurosAcumulado = valorLucroAnual,
-                                PeriodoJuros = dtInicial
+                                PeriodoJuros = dtPeriodo
                             };
 
-                            dtInicial.AddYears(1);
-
                             produtoElegivelDto.ValorLucroAnualAcumulado.Add(valorLucroDto);
+                            dtPeriodo.AddYears(1);
+
 
                         }
 
@@ -100,7 +107,6 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                     throw new Exception("Saldo insuficiente para os produtos selecionados. Mas temos Sugestões de novos produtos para você");
                 }
                 
-                cliente.Saldo -= saldoDeCompra;
 
                 var pedido = new Pedido
                 {
@@ -110,21 +116,28 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                     DtPedido = DateTime.Now
                 };
 
-                foreach (var produtoPedido in produtosPedido)
+                foreach (var produtoPedido in produtoPrecoPedido)
                 {
+                    var somaProdutoPedido = produtoPedido.ValorUnitario * produtoPedido.NrQuantidade;
                     var pedidoItem = new PedidoItem
                     {
                         CdProduto = produtoPedido.CdProduto,
                         NrQuantidade = produtoPedido.NrQuantidade,
-                        ValorTotal = produtoPedido.ValorUnitario * produtoPedido.NrQuantidade
+                        ValorTotal = somaProdutoPedido
                     };
 
+                    cliente.Saldo -= somaProdutoPedido;
                     pedido.PedidoItem.Add(pedidoItem);
                 }
+                
+                cliente.DtUltimaCompra = pedido.DtPedido;
+
+                _context.Add(pedido);
+                _context.Update(cliente);
+                _context.SaveChanges();
 
                 var pedidoRetorno = new PedidoRetornoDTO(pedido);
 
-                _context.SaveChanges();
 
                 returnData.Data = pedidoRetorno;
 

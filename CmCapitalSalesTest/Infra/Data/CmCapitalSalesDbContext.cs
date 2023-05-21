@@ -31,7 +31,9 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("CLIENTE");
 
-                entity.Property(e => e.CdCliente).HasColumnName("CD_CLIENTE");
+                entity.Property(e => e.CdCliente)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CD_CLIENTE");
 
                 entity.Property(e => e.DtUltimaCompra)
                     .HasColumnType("datetime")
@@ -54,7 +56,9 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("PEDIDO");
 
-                entity.Property(e => e.CdPedido).HasColumnName("CD_PEDIDO");
+                entity.Property(e => e.CdPedido)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CD_PEDIDO");
 
                 entity.Property(e => e.CdCliente).HasColumnName("CD_CLIENTE");
 
@@ -77,7 +81,9 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("PEDIDO_ITEM");
 
-                entity.Property(e => e.CdPedidoItem).HasColumnName("CD_PEDIDO_ITEM");
+                entity.Property(e => e.CdPedidoItem)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CD_PEDIDO_ITEM");
 
                 entity.Property(e => e.CdPedido).HasColumnName("CD_PEDIDO");
 
@@ -108,7 +114,9 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("PRODUTO");
 
-                entity.Property(e => e.CdProduto).HasColumnName("CD_PRODUTO");
+                entity.Property(e => e.CdProduto)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("CD_PRODUTO");
 
                 entity.Property(e => e.Descricao)
                     .IsRequired()
@@ -135,7 +143,9 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("TAXA");
 
-                entity.Property(e => e.CdTaxa).HasColumnName("CD_TAXA");
+                entity.Property(e => e.CdTaxa)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("CD_TAXA");
 
                 entity.Property(e => e.Percentual).HasColumnName("PERCENTUAL");
 
