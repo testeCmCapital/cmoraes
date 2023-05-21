@@ -1,6 +1,6 @@
 ﻿using CmCapitalSalesAvaliacao.Infra.Enums;
 
-namespace CmCapitalSalesAvaliacao.Domain.DTO
+namespace CmCapitalSalesAvaliacao.Domain.DTOs
 {
     public class Message
     {

@@ -10,7 +10,7 @@ builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
 
-builder.Services.AddDbContext<CmCapitalSalesContext>(options =>
+builder.Services.AddDbContext<CmCapitalSalesDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json",
@@ -27,14 +27,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/topSellingProducts", (CmCapitalService cmCapitalService) =>
+app.MapGet("/topSellingProducts", (CmCapitalSalesService cmCapitalService) =>
 {
     var returnData = cmCapitalService.ListarProdutosMaisVendidos();
 
     return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
-app.MapGet("/leastSoldProducts", (CmCapitalService cmCapitalService) =>
+app.MapGet("/leastSoldProducts", (CmCapitalSalesService cmCapitalService) =>
 {
     var returnData = cmCapitalService.ListarProdutosMenosVendidos();
 
@@ -42,21 +42,21 @@ app.MapGet("/leastSoldProducts", (CmCapitalService cmCapitalService) =>
 });
 
 
-app.MapGet("/clientPurchasedProducts", (CmCapitalService cmCapitalService, int CdCliente) =>
+app.MapGet("/clientPurchasedProducts", (CmCapitalSalesService cmCapitalService, int CdCliente) =>
 {
     var returnData = cmCapitalService.ListarProdutosCompradosPorCliente(CdCliente);
 
     return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
-app.MapPost("/buyProduct", (CmCapitalService cmCapitalService, PedidoDTO PedidoDTO) =>
+app.MapPost("/buyProduct", (CmCapitalSalesService cmCapitalService, PedidoDTO PedidoDTO) =>
 {
     var returnData = cmCapitalService.EfetivarPedido(PedidoDTO);
 
     return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
-app.MapPut("/cancelPurshase", (CmCapitalService cmCapitalService, int CdPedido) =>
+app.MapPut("/cancelPurshase", (CmCapitalSalesService cmCapitalService, int CdPedido) =>
 {
     var returnData = cmCapitalService.CancelarPedido(CdPedido);
     return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);

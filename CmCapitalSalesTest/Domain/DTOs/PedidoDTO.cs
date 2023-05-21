@@ -1,6 +1,4 @@
-﻿using CmCapitalSalesAvaliacao.Domain.Models;
-
-namespace CmCapitalSalesAvaliacao.Domain.DTOs
+﻿namespace CmCapitalSalesAvaliacao.Domain.DTOs
 {
     public class PedidoDTO
     {

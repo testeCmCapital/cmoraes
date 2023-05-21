@@ -7,8 +7,8 @@ namespace CmCapitalSalesAvaliacao.Infra.Configuration
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            services.AddScoped<CmCapitalSalesContext>();
-            services.AddScoped<CmCapitalService>();
+            services.AddScoped<CmCapitalSalesDbContext>();
+            services.AddScoped<CmCapitalSalesService>();
         }
     }
 }

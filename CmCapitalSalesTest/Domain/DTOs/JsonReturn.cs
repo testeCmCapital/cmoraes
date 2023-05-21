@@ -1,4 +1,4 @@
-﻿namespace CmCapitalSalesAvaliacao.Domain.DTO
+﻿namespace CmCapitalSalesAvaliacao.Domain.DTOs
 {
     public class JsonReturn
     {

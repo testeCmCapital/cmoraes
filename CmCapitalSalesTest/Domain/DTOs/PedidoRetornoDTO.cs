@@ -21,12 +21,12 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
                 PedidoItensDTO = new List<PedidoItemDTO>()
             };
 
-            foreach (var pedidoItem in Pedido.PedidoItensNavigation)
+            foreach (var pedidoItem in Pedido.PedidoItem)
             {
                 var pedidoItemDto = new PedidoItemDTO
                 {
                     CdProduto = pedidoItem.CdProduto,
-                    NrQuantidade = pedidoItem.Quantidade,
+                    NrQuantidade = pedidoItem.NrQuantidade,
                     ValorTotal = pedidoItem.ValorTotal
                 };
             }

@@ -1,15 +1,14 @@
-﻿using CmCapitalSalesAvaliacao.Domain.DTO;
-using CmCapitalSalesAvaliacao.Domain.DTOs;
+﻿using CmCapitalSalesAvaliacao.Domain.DTOs;
 using CmCapitalSalesAvaliacao.Infra.Data;
 using CmCapitalSalesAvaliacao.Infra.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CmCapitalSalesAvaliacao.Domain.Services
 {
-    public class CmCapitalService : Service
+    public class CmCapitalSalesService : Service
     {
-        private readonly CmCapitalSalesContext _context;
-        public CmCapitalService(CmCapitalSalesContext context)
+        private readonly CmCapitalSalesDbContext _context;
+        public CmCapitalSalesService(CmCapitalSalesDbContext context)
         {
             _context = context;
         }
@@ -19,7 +18,14 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
             try
             {
-                var cliente = _context.Clientes.FirstOrDefault(c => c.CdCliente == PedidoDTO.CdCliente);
+                var cliente = _context.Cliente.FirstOrDefault(c => c.CdCliente == PedidoDTO.CdCliente);
+
+                if (cliente == null)
+                    throw new Exception("Cliente não encontrado");
+
+
+                var saldoTotal = cliente.Saldo;
+                var saldoDeCompra = saldoTotal * 80/100;
 
                 if (cliente == null)
                     throw new Exception("Cliente não encontrado");
@@ -40,17 +46,17 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
             try
             {
-                var pedido = _context.Pedidos
-                                .Include(c => c.PedidoItensNavigation)
-                                .Include(c => c.ClienteNavigation)
+                var pedido = _context.Pedido
+                                .Include(c => c.PedidoItem)
+                                .Include(c => c.CdClienteNavigation)
                                 .FirstOrDefault(c => c.CdPedido == CdPedido);
 
                 if(pedido == null)
                     throw new Exception("Pedido não encontrado");
 
-                pedido.ClienteNavigation.Saldo += pedido.PedidoItensNavigation.Sum(c => c.ValorTotal);
+                pedido.CdClienteNavigation.Saldo += pedido.PedidoItem.Sum(c => c.ValorTotal);
 
-                pedido.PedidoStatusEnum = PedidoStatusEnum.Cancelado;
+                pedido.Status = (int) PedidoStatusEnum.Cancelado;
 
                 _context.SaveChanges();
 
@@ -78,9 +84,9 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
             try
             {
                 var produtosMaisVendidos =  (
-                    from p in _context.Produtos 
-                    join pi in _context.PedidoItens on p.CdProduto equals pi.CdProduto
-                    select new { pi.CdProduto, p.Descricao, pi.Quantidade, p.ValorUnitario }).ToList();
+                    from p in _context.Produto 
+                    join pi in _context.PedidoItem on p.CdProduto equals pi.CdProduto
+                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).ToList();
 
                 returnData.Data = produtosMaisVendidos;
 
@@ -101,9 +107,9 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
             try
             {
                 var produtosMenosVendidos = (
-                    from p in _context.Produtos
-                    join pi in _context.PedidoItens on p.CdProduto equals pi.CdProduto
-                    select new { pi.CdProduto, p.Descricao, pi.Quantidade, p.ValorUnitario }).ToList();
+                    from p in _context.Produto
+                    join pi in _context.PedidoItem on p.CdProduto equals pi.CdProduto
+                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).ToList();
 
                 returnData.Data = produtosMenosVendidos;
 
@@ -122,7 +128,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
             try
             {
-                var cliente = _context.Clientes.FirstOrDefault(c => c.CdCliente == CdCliente);
+                var cliente = _context.Cliente.FirstOrDefault(c => c.CdCliente == CdCliente);
 
                 return returnData;
 

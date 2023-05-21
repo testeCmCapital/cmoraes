@@ -1,4 +1,4 @@
-﻿using CmCapitalSalesAvaliacao.Domain.DTO;
+﻿using CmCapitalSalesAvaliacao.Domain.DTOs;
 using CmCapitalSalesAvaliacao.Infra.Enums;
 
 namespace CmCapitalSalesAvaliacao.Domain.Services
