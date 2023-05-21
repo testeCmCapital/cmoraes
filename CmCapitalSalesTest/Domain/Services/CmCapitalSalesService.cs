@@ -220,7 +220,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
         private bool PedidoElegivelCancelamento(Pedido Pedido)
         {
-            return DateTime.Now <= Pedido.DtPedido.AddDays(7);
+            return DateTime.Now <= Pedido.DtPedido.AddDays(7) && Pedido.Status == (int) PedidoStatusEnum.Efetuado;
         }
 
     }
