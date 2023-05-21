@@ -207,10 +207,17 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
             try
             {
-                var produtosMaisVendidos =  (
-                    from p in _context.Produto 
-                    join pi in _context.PedidoItem on p.CdProduto equals pi.CdProduto
-                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).AsEnumerable();
+                var produtosMaisVendidos = (from prod in _context.Produto
+                                join pi in _context.PedidoItem on prod.CdProduto equals pi.CdProduto
+                                group new { prod, pi } by new { pi.CdProduto, prod.Descricao, prod.ValorUnitario } into grp
+                                orderby grp.Sum(p => p.pi.NrQuantidade) descending
+                                select new
+                                {
+                                    grp.Key.CdProduto,
+                                    Quantidadetotal = grp.Sum(p => p.pi.NrQuantidade),
+                                    grp.Key.Descricao,
+                                    grp.Key.ValorUnitario
+                                }).Take(3);
 
 
                 returnData.Data = produtosMaisVendidos;
@@ -231,10 +238,17 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
             try
             {
-                var produtosMenosVendidos = (
-                    from p in _context.Produto
-                    join pi in _context.PedidoItem on p.CdProduto equals pi.CdProduto
-                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).AsEnumerable();
+                var produtosMenosVendidos = (from prod in _context.Produto
+                                            join pi in _context.PedidoItem on prod.CdProduto equals pi.CdProduto
+                                            group new { prod, pi } by new { pi.CdProduto, prod.Descricao, prod.ValorUnitario } into grp
+                                            orderby grp.Sum(p => p.pi.NrQuantidade) ascending
+                                            select new
+                                            {
+                                                grp.Key.CdProduto,
+                                                Quantidadetotal = grp.Sum(p => p.pi.NrQuantidade),
+                                                grp.Key.Descricao,
+                                                grp.Key.ValorUnitario
+                                            }).Take(3);
 
                 returnData.Data = produtosMenosVendidos;
 
