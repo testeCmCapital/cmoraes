@@ -31,14 +31,14 @@ app.MapGet("/topSellingProducts", (CmCapitalSalesService cmCapitalService) =>
 {
     var returnData = cmCapitalService.ListarProdutosMaisVendidos();
 
-    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
+    return returnData.IsSuccess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
 app.MapGet("/leastSoldProducts", (CmCapitalSalesService cmCapitalService) =>
 {
     var returnData = cmCapitalService.ListarProdutosMenosVendidos();
 
-    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
+    return returnData.IsSuccess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
 
@@ -46,20 +46,20 @@ app.MapGet("/clientPurchasedProducts", (CmCapitalSalesService cmCapitalService, 
 {
     var returnData = cmCapitalService.ListarProdutosCompradosPorCliente(CdCliente);
 
-    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
+    return returnData.IsSuccess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
 app.MapPost("/buyProduct", (CmCapitalSalesService cmCapitalService, PedidoDTO PedidoDTO) =>
 {
     var returnData = cmCapitalService.EfetivarPedido(PedidoDTO);
 
-    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
+    return returnData.IsSuccess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
 app.MapPut("/cancelPurshase", (CmCapitalSalesService cmCapitalService, int CdPedido) =>
 {
     var returnData = cmCapitalService.CancelarPedido(CdPedido);
-    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
+    return returnData.IsSuccess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
 
