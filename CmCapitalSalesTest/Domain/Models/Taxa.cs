@@ -9,7 +9,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Models
     {
         public int CdTaxa { get; set; }
         public decimal ValorInicial { get; set; }
-        public decimal ValorFinal { get; set; }
+        public decimal? ValorFinal { get; set; }
         public double Percentual { get; set; }
     }
 }
