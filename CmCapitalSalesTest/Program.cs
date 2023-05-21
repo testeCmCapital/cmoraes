@@ -43,7 +43,7 @@ app.MapGet("/clientPurchasedProducts", () =>
     return "Produtos comprados por clientes";
 });
 
-app.MapPost("/BuyProduct", () =>
+app.MapPost("/buyProduct", () =>
 {
     return "Produto comprado";
 });
