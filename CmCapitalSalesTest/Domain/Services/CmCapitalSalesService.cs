@@ -31,8 +31,8 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
             {
                 return TratarRetornoExcecao(returnData, e.Message);
             }
-
         }
+
         public JsonReturn EfetivarPedido(PedidoDTO PedidoDTO)
         {
             var returnData = new JsonReturn { IsSucess = true };
@@ -45,8 +45,6 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                     throw new Exception("Cliente não encontrado");
 
                 var saldoDeCompra = CalcularSaldoCompra(cliente.Saldo);
-
-
 
                 var produtosPedido = (
                     from pr in _context.Produto
@@ -61,7 +59,42 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                         && p.DtVencimento <= produtosPedido.First().DtVencimento.AddMonths(-4)
                         select p ).Take(3);
 
-                    returnData.Data = produtosElegiveis;
+                    var produtosElegiveisDto = new List<ProdutoElegivelDTO>();
+
+                    foreach (var produtoElegivel in produtosElegiveis)
+                    {
+                        var taxaProduto = _context.Taxa.FirstOrDefault(tx => produtoElegivel.ValorUnitario  > tx.ValorInicial && produtoElegivel.ValorUnitario < tx.ValorFinal);
+
+                        var produtoElegivelDto = new ProdutoElegivelDTO
+                        {
+                            CdProduto = produtoElegivel.CdProduto,
+                            ValorUnitario = produtoElegivel.ValorUnitario,
+                            DtVencimento = produtoElegivel.DtVencimento,
+                            ValorLucroAnualAcumulado = new List<ValorLucroDTO>()
+                        };
+
+                        var dtInicial = DateTime.Now;
+                        
+                        while(produtoElegivel.DtVencimento.Year < dtInicial.Year)
+                        {
+                            var valorLucroAnual = taxaProduto == null ? (produtoElegivel.ValorUnitario * (decimal)taxaProduto.Percentual) / 100 : 0;
+
+                            var valorLucroDto = new ValorLucroDTO
+                            {
+                                ValorJurosAcumulado = valorLucroAnual,
+                                PeriodoJuros = dtInicial
+                            };
+
+                            dtInicial.AddYears(1);
+
+                            produtoElegivelDto.ValorLucroAnualAcumulado.Add(valorLucroDto);
+
+                        }
+
+                        produtosElegiveisDto.Add(produtoElegivelDto);
+                    }
+
+                    returnData.Data = produtosElegiveisDto;
 
 
                     throw new Exception("Saldo insuficiente para os produtos selecionados. Mas temos Sugestões de novos produtos para você");
