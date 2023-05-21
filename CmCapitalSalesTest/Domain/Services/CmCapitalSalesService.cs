@@ -13,6 +13,26 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
         {
             _context = context;
         }
+
+        public JsonReturn ListarProdutos()
+        {
+            var returnData = new JsonReturn { IsSucess = true };
+
+            try
+            {
+                var produtos = _context.Produto.ToList();
+
+                returnData.Data = produtos;
+
+                return returnData;
+
+            }
+            catch (Exception e)
+            {
+                return TratarRetornoExcecao(returnData, e.Message);
+            }
+
+        }
         public JsonReturn EfetivarPedido(PedidoDTO PedidoDTO)
         {
             var returnData = new JsonReturn { IsSucess = true };
@@ -107,7 +127,8 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 var produtosMaisVendidos =  (
                     from p in _context.Produto 
                     join pi in _context.PedidoItem on p.CdProduto equals pi.CdProduto
-                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).ToList();
+                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).AsEnumerable();
+
 
                 returnData.Data = produtosMaisVendidos;
 
@@ -130,7 +151,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 var produtosMenosVendidos = (
                     from p in _context.Produto
                     join pi in _context.PedidoItem on p.CdProduto equals pi.CdProduto
-                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).ToList();
+                    select new { pi.CdProduto, p.Descricao, pi.NrQuantidade, p.ValorUnitario }).AsEnumerable();
 
                 returnData.Data = produtosMenosVendidos;
 
