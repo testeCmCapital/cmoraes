@@ -9,7 +9,8 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
         public long CdCliente { get; set; }
         public List<PedidoItemDTO> PedidoItensDTO { get; set; }
         public DateTime DtPedido { get; set; }
-        
+        public decimal ValorLucroAcumulado { get; set; }
+
         private PedidoRetornoDTO() { }
 
         public PedidoRetornoDTO (Pedido Pedido)

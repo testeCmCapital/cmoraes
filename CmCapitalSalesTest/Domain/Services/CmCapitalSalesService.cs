@@ -1,4 +1,5 @@
 ﻿using CmCapitalSalesAvaliacao.Domain.DTOs;
+using CmCapitalSalesAvaliacao.Domain.Models;
 using CmCapitalSalesAvaliacao.Infra.Data;
 using CmCapitalSalesAvaliacao.Infra.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -23,12 +24,29 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 if (cliente == null)
                     throw new Exception("Cliente não encontrado");
 
+                var saldoDeCompra = CalcularSaldoCompra(cliente.Saldo);
 
-                var saldoTotal = cliente.Saldo;
-                var saldoDeCompra = saldoTotal * 80/100;
+                cliente.Saldo -= saldoDeCompra;
 
-                if (cliente == null)
-                    throw new Exception("Cliente não encontrado");
+                var produtosPedido = (
+                    from pr in _context.Produto
+                    join pi in PedidoDTO.PedidoItensDTO on pr.CdProduto equals pi.CdProduto 
+                    select new { pr, pi.NrQuantidade }).ToList();
+
+                var pedido = new Pedido
+                {
+                    CdCliente = PedidoDTO.CdCliente,
+                    Status = (int)PedidoStatusEnum.Efetuado,
+                    
+                };
+
+                _context.SaveChanges();
+
+
+                returnData.Messages = new List<Message>
+                {
+                    new Message { Description = "Pedido Efetuado com Sucesso", MessageStatusEnum = MessageStatusEnum.Info }
+                };
 
                 return returnData;
 
@@ -54,6 +72,9 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 if(pedido == null)
                     throw new Exception("Pedido não encontrado");
 
+                if (!PedidoElegivelCancelamento(pedido))
+                    throw new Exception("Pedido não elegivel para cancelamento");
+
                 pedido.CdClienteNavigation.Saldo += pedido.PedidoItem.Sum(c => c.ValorTotal);
 
                 pedido.Status = (int) PedidoStatusEnum.Cancelado;
@@ -64,7 +85,7 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 
                 returnData.Messages = new List<Message>
                 {
-                    new Message { Description = "Pedido Cancelado com Sucesso", MessageStatusEnum = MessageStatusEnum.Info }
+                    new Message { Description = "Pedido Cancelado e saldo estornado com Sucesso", MessageStatusEnum = MessageStatusEnum.Info }
                 };
 
                 return returnData;
@@ -138,6 +159,18 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 return TratarRetornoExcecao(returnData, e.Message);
             }
         }
+
+        private decimal CalcularSaldoCompra(decimal saldoTotal)
+        {
+            return saldoTotal * 80 / 100;
+        }
+
+        private bool PedidoElegivelCancelamento(Pedido Pedido)
+        {
+            return DateTime.Now <= Pedido.DtPedido.AddDays(7);
+        }
+
+
         
     }
 }
