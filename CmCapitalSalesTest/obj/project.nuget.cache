@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1991lEtW/gwfiC7GqiKmDvHHwBR8S/57HgaC+Ju9R+zDJjvkT1CSg6DgevAXHScY7CiCVVRIjdFC3Zm1Ze/r2g==",
+  "dgSpecHash": "HLpsekfRNX1VNXQWwSDqub5M5GqegnV9q07gTZryBZL8rAx/iA2fX6HTjq3gZOHQd8N7UoxuKxoMf8PT8Yu2Tg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\CmCapitalSalesTest.csproj",
+  "projectFilePath": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\CmCapitalSalesAvaliacao.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\cmora\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\cmora\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

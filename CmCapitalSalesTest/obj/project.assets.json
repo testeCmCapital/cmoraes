@@ -231,9 +231,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\CmCapitalSalesTest.csproj",
-      "projectName": "CmCapitalSalesTest",
-      "projectPath": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\CmCapitalSalesTest.csproj",
+      "projectUniqueName": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\CmCapitalSalesAvaliacao.csproj",
+      "projectName": "CmCapitalSalesAvaliacao",
+      "projectPath": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\CmCapitalSalesAvaliacao.csproj",
       "packagesPath": "C:\\Users\\cmora\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\cmora\\Documents\\TestDev\\CmCapitalSalesTest\\CmCapitalSalesTest\\obj\\",
       "projectStyle": "PackageReference",
