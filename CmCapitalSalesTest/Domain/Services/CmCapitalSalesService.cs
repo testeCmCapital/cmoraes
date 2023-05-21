@@ -57,13 +57,18 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                     throw new Exception("Produtos não encontrados");
 
 
-                if (cliente.Saldo < produtoPrecoPedido.Sum(p => p.ValorUnitario * p.NrQuantidade))
+                if (saldoDeCompra <= produtoPrecoPedido.Sum(p => p.ValorUnitario * p.NrQuantidade))
                 {
                     var produtosElegiveis = (
                         from p in _context.Produto
-                        where p.ValorUnitario < cliente.Saldo
+                        where p.ValorUnitario <= saldoDeCompra
                         && p.DtVencimento <= produtosPedido.First().DtVencimento.AddMonths(-4)
                         select p ).Take(3);
+
+                    if (!produtosElegiveis.Any())
+                    {
+                        throw new Exception("Saldo insuficiente para os produtos selecionados.");
+                    }
 
                     var produtosElegiveisDto = new List<ProdutoElegivelDTO>();
 
