@@ -208,16 +208,16 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
             try
             {
                 var produtosMaisVendidos = (from prod in _context.Produto
-                                join pi in _context.PedidoItem on prod.CdProduto equals pi.CdProduto
-                                group new { prod, pi } by new { pi.CdProduto, prod.Descricao, prod.ValorUnitario } into grp
-                                orderby grp.Sum(p => p.pi.NrQuantidade) descending
-                                select new
-                                {
-                                    grp.Key.CdProduto,
-                                    Quantidadetotal = grp.Sum(p => p.pi.NrQuantidade),
-                                    grp.Key.Descricao,
-                                    grp.Key.ValorUnitario
-                                }).Take(3);
+                                            join pi in _context.PedidoItem on prod.CdProduto equals pi.CdProduto
+                                            group new { prod, pi } by new { pi.CdProduto, prod.Descricao, prod.ValorUnitario } into grp
+                                            orderby grp.Sum(p => p.pi.NrQuantidade) descending
+                                            select new
+                                            {
+                                                grp.Key.CdProduto,
+                                                Quantidadetotal = grp.Sum(p => p.pi.NrQuantidade),
+                                                grp.Key.Descricao,
+                                                grp.Key.ValorUnitario
+                                            }).Take(3);
 
 
                 returnData.Data = produtosMaisVendidos;
