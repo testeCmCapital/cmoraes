@@ -1,9 +1,15 @@
-﻿namespace CmCapitalSalesAvaliacao.Domain.DTOs
+﻿using CmCapitalSalesAvaliacao.Domain.Models;
+
+namespace CmCapitalSalesAvaliacao.Domain.DTOs
 {
     public class PedidoDTO
     {
-        public int CdCliente { get; set; }
-        public List<int> CdProduto { get; set; }
+        
+
+        public long CdPedido { get; set; }
+
+        public long CdCliente { get; set; }
+        public List<PedidoItemDTO> PedidoItensDTO { get; set; }
         public DateTime DtPedido { get; set; }
     }
 }

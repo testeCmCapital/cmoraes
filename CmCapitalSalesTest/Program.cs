@@ -1,4 +1,5 @@
 using CmCapitalSalesAvaliacao.Domain.DTOs;
+using CmCapitalSalesAvaliacao.Domain.Services;
 using CmCapitalSalesAvaliacao.Infra.Configuration;
 using CmCapitalSalesAvaliacao.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -26,32 +27,43 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
-
-app.MapGet("/topSellingProducts", () =>
+app.MapGet("/topSellingProducts", (CmCapitalService cmCapitalService) =>
 {
-    return Results.Ok("Produtos mais vendidos");
+    var returnData = cmCapitalService.ListarProdutosMaisVendidos();
+
+    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
-app.MapGet("/leastSoldProducts", () =>
+app.MapGet("/leastSoldProducts", (CmCapitalService cmCapitalService) =>
 {
-    return Results.Ok("Produtos menos vendidos");
+    var returnData = cmCapitalService.ListarProdutosMenosVendidos();
+
+    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
 
-app.MapGet("/clientPurchasedProducts", (int CdCliente) =>
+app.MapGet("/clientPurchasedProducts", (CmCapitalService cmCapitalService, int CdCliente) =>
 {
-    return Results.Ok("Produtos comprados por clientes");
+    var returnData = cmCapitalService.ListarProdutosCompradosPorCliente(CdCliente);
+
+    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
-app.MapPost("/buyProduct", (PedidoDTO PedidoDto) =>
+app.MapPost("/buyProduct", (CmCapitalService cmCapitalService, PedidoDTO PedidoDTO) =>
 {
-    return Results.Ok("Produto comprado");
+    var returnData = cmCapitalService.EfetivarPedido(PedidoDTO);
+
+    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
 
-app.MapPut("/cancelPurshase", (int CdPedido) =>
+app.MapPut("/cancelPurshase", (CmCapitalService cmCapitalService, int CdPedido) =>
 {
-    return Results.Ok("Produto comprado");
+    var returnData = cmCapitalService.CancelarPedido(CdPedido);
+    return returnData.IsSucess ? Results.Ok(returnData) : Results.BadRequest(returnData);
 });
+
+
+
+
 
 app.Run();
