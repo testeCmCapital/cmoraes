@@ -56,5 +56,16 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\CLIENTE.sql" />
+    <Build Include="Tables\PRODUTO.sql" />
+    <Build Include="Tables\TAXA.sql" />
+    <Build Include="Tables\PEDIDO.sql" />
+    <Build Include="Tables\PEDIDO_ITEM.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="CmCapitalSalesDb.refactorlog" />
   </ItemGroup>
 </Project>
