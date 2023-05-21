@@ -16,12 +16,10 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
         public PedidoRetornoDTO (Pedido Pedido)
         {
             PedidoItensRetornoDTO = new List<PedidoItemRetornoDTO>();
-            var pedidoRetornoDto = new PedidoRetornoDTO
-            {
-                CdCliente = Pedido.CdCliente,
-                CdPedido = Pedido.CdPedido,
-                PedidoItensRetornoDTO = new List<PedidoItemRetornoDTO>()
-            };
+
+            CdPedido = Pedido.CdPedido;
+            CdCliente = Pedido.CdCliente;
+            PedidoItensRetornoDTO = new List<PedidoItemRetornoDTO>();
 
             foreach (var pedidoItem in Pedido.PedidoItem)
             {
@@ -29,7 +27,7 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
                 {
                     CdProduto = pedidoItem.CdProduto,
                     NrQuantidade = pedidoItem.NrQuantidade,
-                    ValorTotal = pedidoItem.ValorTotal * pedidoItem.NrQuantidade,
+                    ValorTotal = pedidoItem.ValorTotal,
                 };
 
 
