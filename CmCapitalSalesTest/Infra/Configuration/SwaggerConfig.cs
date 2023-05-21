@@ -1,5 +1,4 @@
-﻿using CmCapitalSalesAvaliacao.Infra.Data;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 
 namespace CmCapitalSalesAvaliacao.Infra.Configuration
 {
