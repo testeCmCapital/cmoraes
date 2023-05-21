@@ -28,7 +28,7 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
                 {
                     CdProduto = pedidoItem.CdProduto,
                     NrQuantidade = pedidoItem.NrQuantidade,
-                    ValorTotal = pedidoItem.ValorTotal
+                    ValorTotal = pedidoItem.ValorTotal,
                 };
 
                 PedidoItensRetornoDTO.Add(pedidoItemRetornoDto);

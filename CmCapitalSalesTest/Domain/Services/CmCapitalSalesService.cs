@@ -51,13 +51,15 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
                 var produtosPedido = (
                     from pr in _context.Produto
                     join pi in PedidoDTO.PedidoItensDTO on pr.CdProduto equals pi.CdProduto 
-                    select new { pr.CdProduto, pr.ValorUnitario, pi.NrQuantidade }).ToList();
+                    select new { pr.CdProduto, pr.ValorUnitario, pr.DtVencimento, pi.NrQuantidade }).ToList();
 
                 if(cliente.Saldo < produtosPedido.Sum(p => p.ValorUnitario * p.NrQuantidade))
                 {
                     var produtosElegiveis = (
                         from p in _context.Produto
-                        where p.ValorUnitario < cliente.Saldo select p ).Take(3);
+                        where p.ValorUnitario < cliente.Saldo
+                        && p.DtVencimento <= produtosPedido.First().DtVencimento.AddMonths(-4)
+                        select p ).Take(3);
 
                     returnData.Data = produtosElegiveis;
 
