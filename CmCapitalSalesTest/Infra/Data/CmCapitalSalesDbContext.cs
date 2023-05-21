@@ -31,9 +31,7 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("CLIENTE");
 
-                entity.Property(e => e.CdCliente)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CD_CLIENTE");
+                entity.Property(e => e.CdCliente).HasColumnName("CD_CLIENTE");
 
                 entity.Property(e => e.DtUltimaCompra)
                     .HasColumnType("datetime")
@@ -52,14 +50,11 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
             modelBuilder.Entity<Pedido>(entity =>
             {
-                entity.HasKey(e => e.CdPedido)
-                    .IsClustered(false);
+                entity.HasKey(e => e.CdPedido);
 
                 entity.ToTable("PEDIDO");
 
-                entity.Property(e => e.CdPedido)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CD_PEDIDO");
+                entity.Property(e => e.CdPedido).HasColumnName("CD_PEDIDO");
 
                 entity.Property(e => e.CdCliente).HasColumnName("CD_CLIENTE");
 
@@ -78,14 +73,11 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
             modelBuilder.Entity<PedidoItem>(entity =>
             {
-                entity.HasKey(e => e.CdPedidoItem)
-                    .IsClustered(false);
+                entity.HasKey(e => e.CdPedidoItem);
 
                 entity.ToTable("PEDIDO_ITEM");
 
-                entity.Property(e => e.CdPedidoItem)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CD_PEDIDO_ITEM");
+                entity.Property(e => e.CdPedidoItem).HasColumnName("CD_PEDIDO_ITEM");
 
                 entity.Property(e => e.CdPedido).HasColumnName("CD_PEDIDO");
 
@@ -116,9 +108,7 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("PRODUTO");
 
-                entity.Property(e => e.CdProduto)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CD_PRODUTO");
+                entity.Property(e => e.CdProduto).HasColumnName("CD_PRODUTO");
 
                 entity.Property(e => e.Descricao)
                     .IsRequired()
@@ -145,9 +135,7 @@ namespace CmCapitalSalesAvaliacao.Infra.Data
 
                 entity.ToTable("TAXA");
 
-                entity.Property(e => e.CdTaxa)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CD_TAXA");
+                entity.Property(e => e.CdTaxa).HasColumnName("CD_TAXA");
 
                 entity.Property(e => e.Percentual).HasColumnName("PERCENTUAL");
 
