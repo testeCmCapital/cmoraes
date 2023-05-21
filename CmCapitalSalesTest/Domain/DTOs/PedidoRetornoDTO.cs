@@ -7,9 +7,9 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
         public long CdPedido { get; set; }
 
         public long CdCliente { get; set; }
-        public List<PedidoItemDTO> PedidoItensDTO { get; set; }
+        public List<PedidoItemRetornoDTO> PedidoItensRetornoDTO { get; set; }
         public DateTime DtPedido { get; set; }
-        public decimal ValorLucroAcumulado { get; set; }
+        
 
         private PedidoRetornoDTO() { }
 
@@ -19,17 +19,19 @@ namespace CmCapitalSalesAvaliacao.Domain.DTOs
             {
                 CdCliente = Pedido.CdCliente,
                 CdPedido = Pedido.CdPedido,
-                PedidoItensDTO = new List<PedidoItemDTO>()
+                PedidoItensRetornoDTO = new List<PedidoItemRetornoDTO>()
             };
 
             foreach (var pedidoItem in Pedido.PedidoItem)
             {
-                var pedidoItemDto = new PedidoItemDTO
+                var pedidoItemRetornoDto = new PedidoItemRetornoDTO
                 {
                     CdProduto = pedidoItem.CdProduto,
                     NrQuantidade = pedidoItem.NrQuantidade,
                     ValorTotal = pedidoItem.ValorTotal
                 };
+
+                PedidoItensRetornoDTO.Add(pedidoItemRetornoDto);
             }
 
         }

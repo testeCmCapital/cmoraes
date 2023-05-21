@@ -46,22 +46,52 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
 
                 var saldoDeCompra = CalcularSaldoCompra(cliente.Saldo);
 
-                cliente.Saldo -= saldoDeCompra;
+
 
                 var produtosPedido = (
                     from pr in _context.Produto
                     join pi in PedidoDTO.PedidoItensDTO on pr.CdProduto equals pi.CdProduto 
-                    select new { pr, pi.NrQuantidade }).ToList();
+                    select new { pr.CdProduto, pr.ValorUnitario, pi.NrQuantidade }).ToList();
+
+                if(cliente.Saldo < produtosPedido.Sum(p => p.ValorUnitario * p.NrQuantidade))
+                {
+                    var produtosElegiveis = (
+                        from p in _context.Produto
+                        where p.ValorUnitario < cliente.Saldo select p ).Take(3);
+
+                    returnData.Data = produtosElegiveis;
+
+
+                    throw new Exception("Saldo insuficiente para os produtos selecionados. Mas temos Sugestões de novos produtos para você");
+                }
+                
+                cliente.Saldo -= saldoDeCompra;
 
                 var pedido = new Pedido
                 {
                     CdCliente = PedidoDTO.CdCliente,
                     Status = (int)PedidoStatusEnum.Efetuado,
-                    
+                    PedidoItem = new List<PedidoItem>(),
+                    DtPedido = DateTime.Now
                 };
+
+                foreach (var produtoPedido in produtosPedido)
+                {
+                    var pedidoItem = new PedidoItem
+                    {
+                        CdProduto = produtoPedido.CdProduto,
+                        NrQuantidade = produtoPedido.NrQuantidade,
+                        ValorTotal = produtoPedido.ValorUnitario * produtoPedido.NrQuantidade
+                    };
+
+                    pedido.PedidoItem.Add(pedidoItem);
+                }
+
+                var pedidoRetorno = new PedidoRetornoDTO(pedido);
 
                 _context.SaveChanges();
 
+                returnData.Data = pedidoRetorno;
 
                 returnData.Messages = new List<Message>
                 {
@@ -191,7 +221,5 @@ namespace CmCapitalSalesAvaliacao.Domain.Services
             return DateTime.Now <= Pedido.DtPedido.AddDays(7);
         }
 
-
-        
     }
 }
